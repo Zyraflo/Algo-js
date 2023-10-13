@@ -1,61 +1,46 @@
-// Classes are groups of attributes under custome names that can be cloned (called instances)
-
 class Pokemon {
-  constructor(name, attack, defense, hp, luck) {
-    this.name = name; // str
-    this.defense = defense; // int
-    this.attack = attack; // int
-    this.hp = hp; // int
-    this.luck = luck; // percentage
-  }
-
-  isLucky() {
-    let lucky = Math.floor(Math.random() * 100);
-    // console.log(lucky);
-    // console.log(lucky >= this.luck);
-    return lucky >= this.luck;
-  }
-
-  attackPokemon(target) {
-    if (this.isLucky()) {
-      let damage = this.attack - target.defense;
-      target.hp -= damage;
-
-      console.log(
-        `${this.name} attacks and deals ${this.attack} points of damage!`
-      );
-      console.log(`${target.name} lost ${damage} health point(s)`);
-    } else {
-      console.log(`${this.name} missed!`);
+    constructor (name, atk, def, hp, luck) {
+        this.name = name
+        this.atk = atk
+        this.def = def
+        this.hp = hp
+        this.luck = luck
     }
 
-    if (this.hp < 0) {
-      this.hp = 0;
+    isLucky() {
+        let Luck = Math.floor(Math.random() * 100) <= this.luck
+        return Luck
     }
 
-    if (target.hp < 0) {
-      target.hp = 0;
+    atkPokemon(target) {
+        if (this.isLucky()) {
+            let damages = this.atk - target.def
+            if (damages <= 0) {
+                console.log(`${this.name} inflige 0 dégat à ${target.name}. Il lui reste ${target.hp} pv`)
+            } else {
+                target.hp -= damages
+                console.log(`${this.name} inflige ${damages} dégats à ${target.name}. Il lui reste ${target.hp} pv`)
+            }
+        } else {
+            console.log(`${this.name} à raté son attaque`)
+        }
     }
-
-    console.log(
-      `\t${this.name} : ${this.hp} HP left || ${target.name} : ${target.hp} HP left`
-    );
-  }
 }
 
-// You can't call directly the class' methods, you need to create an instance first
-let pikachu = new Pokemon("Pikachu", 10, 8, 30, 70);
-let charmander = new Pokemon("Charmander", 12, 6, 30, 60);
+let Méganium1 = new Pokemon("Méganium", 82, 100, 80, 75)
+let Méganium = new Pokemon("Méganium", 82, 100, 80, 75)
 
-while (pikachu.hp > 0 && charmander.hp > 0) {
-  pikachu.attackPokemon(charmander);
-  if (charmander.hp <= 0) {
-    console.log("Pikachu won!");
-    break;
-  }
-  charmander.attackPokemon(pikachu);
-  if (pikachu.hp <= 0) {
-    console.log("Charmander won!");
-    break;
-  }
+while (Méganium.hp > 0 || Méganium1.hp > 0) {
+    console.log(`${Méganium1.name} attaque Méganium`)
+    Méganium1.atkPokemon(Méganium)
+    if (Méganium.hp <= 0) {
+        console.log(`${Méganium.name} est mort`)
+        break
+    }
+    console.log(`${Méganium.name} attaque Méganium1`)
+    Méganium.atkPokemon(Méganium1)
+    if (Méganium1.hp <= 0) {
+        console.log(`${Méganium1.name} est mort`)
+        break
+    }
 }
