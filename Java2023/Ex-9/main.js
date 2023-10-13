@@ -1,25 +1,61 @@
+// Classes are groups of attributes under custome names that can be cloned (called instances)
+
 class Pokemon {
-  constructor(name, atk, def, hp, luck) {
-    this.name = name;
-    this.atk = atk;
-    this.def = def;
-    this.hp = hp;
-    this.luck = Math.random();
+  constructor(name, attack, defense, hp, luck) {
+    this.name = name; // str
+    this.defense = defense; // int
+    this.attack = attack; // int
+    this.hp = hp; // int
+    this.luck = luck; // percentage
   }
 
-  atkPokemon(target) {
-    let damages = this.atk - target.def;
-    target.hp -= damages;
-    if (target.hp <= 0) {
-      console.log("$(target.name) est mort");
+  isLucky() {
+    let lucky = Math.floor(Math.random() * 100);
+    // console.log(lucky);
+    // console.log(lucky >= this.luck);
+    return lucky >= this.luck;
+  }
+
+  attackPokemon(target) {
+    if (this.isLucky()) {
+      let damage = this.attack - target.defense;
+      target.hp -= damage;
+
+      console.log(
+        `${this.name} attacks and deals ${this.attack} points of damage!`
+      );
+      console.log(`${target.name} lost ${damage} health point(s)`);
+    } else {
+      console.log(`${this.name} missed!`);
     }
+
+    if (this.hp < 0) {
+      this.hp = 0;
+    }
+
+    if (target.hp < 0) {
+      target.hp = 0;
+    }
+
+    console.log(
+      `\t${this.name} : ${this.hp} HP left || ${target.name} : ${target.hp} HP left`
+    );
   }
 }
 
-let moustillon = new Pokemon("Moustillon", 10, 5, 30, 75);
-let rondoudou = new Pokemon("Rondoudou", 15, 3, 30, 50);
+// You can't call directly the class' methods, you need to create an instance first
+let pikachu = new Pokemon("Pikachu", 10, 8, 30, 70);
+let charmander = new Pokemon("Charmander", 12, 6, 30, 60);
 
-let = percent = 75;
-let isLucky = Math.floor(Math.random() * 100) <= percent;
-
-console.log(moustillon.isLucky());
+while (pikachu.hp > 0 && charmander.hp > 0) {
+  pikachu.attackPokemon(charmander);
+  if (charmander.hp <= 0) {
+    console.log("Pikachu won!");
+    break;
+  }
+  charmander.attackPokemon(pikachu);
+  if (pikachu.hp <= 0) {
+    console.log("Charmander won!");
+    break;
+  }
+}
